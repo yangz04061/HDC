@@ -1,21 +1,21 @@
 ```mermaid
 
 stateDiagram-v2
-    state "CST OFF" as OFF
-    state "CST STANDBY" as STANDBY
-    state "CST ACTIVE" as ACTIVE
-    state "CST FAILURE" as FAILURE
+    state "HDC 关闭状态 (HDC灯关闭)" as OFF
+    state "HDC 待命状态 (HDC灯常亮)" as STANDBY
+    state "HDC 激活状态 (HDC灯闪烁)" as ACTIVE
+    state "HDC 故障状态 (HDC灯关闭，提示驾驶员故障)" as FAILURE
 
-    OFF --> STANDBY: 条件满足\n 开关使能且无抑制(开关信号有效&无boost抑制&功能关键信号有效)
+    OFF --> STANDBY: 条件0满足
 
-    STANDBY --> ACTIVE: 条件满足\n 开关开启&&无Boost抑制&&信号有效&&无其它功能干预&&制动踏板高于阈值&&制动踏板速率小于阈值&&车速在工作区间&&减速度在工作区间&&坡度小于阈值&&车辆处于前进状态&&侧向加速度小于阈值&&转向角小于阈值
-    STANDBY --> OFF: 条件满足\n 开关关闭
-    STANDBY --> FAILURE: 条件满足\n boost抑制 || 功能关键信号无效
+    STANDBY --> ACTIVE: 条件2满足
+    STANDBY --> OFF: 条件1满足
+    STANDBY --> FAILURE: 条件4满足
 
-    ACTIVE --> OFF: 条件满足\n 开关关闭或开关信号无效
-    ACTIVE --> FAILURE: 条件满足\n boost抑制 || 功能关键信号无效
-    ACTIVE --> STANDBY: 条件满足\n 有其它功能干预 || 踏板低于阈值 || 速度超限 || 定时器超时|| 踏板速率太大
+    ACTIVE --> OFF: 条件1满足
+    ACTIVE --> FAILURE: 条件4满足
+    ACTIVE --> STANDBY: 条件3满足
 
-    FAILURE --> STANDBY: Boost & Signal 恢复且开关仍置位
+    FAILURE --> OFF: 条件5
 
 ```
